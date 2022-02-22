@@ -1,4 +1,5 @@
-// +build linux freebsd
+//go:build linux || freebsd || !darwin
+// +build linux freebsd !darwin
 
 package daemon // import "github.com/docker/docker/daemon"
 

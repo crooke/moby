@@ -1,5 +1,5 @@
-//go:build !windows || !darwin
-// +build !windows !darwin
+//go:build !windows && !darwin
+// +build !windows,!darwin
 
 package stats // import "github.com/docker/docker/daemon/stats"
 

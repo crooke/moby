@@ -1,11 +1,9 @@
-// +build !windows,!darwin
-
 package snapshot
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
-	"syscall"
 
 	"github.com/containerd/containerd/mount"
 	"github.com/pkg/errors"
@@ -51,20 +49,5 @@ func (lm *localMounter) Mount() (string, error) {
 }
 
 func (lm *localMounter) Unmount() error {
-	lm.mu.Lock()
-	defer lm.mu.Unlock()
-
-	if lm.target != "" {
-		if err := mount.Unmount(lm.target, syscall.MNT_DETACH); err != nil {
-			return err
-		}
-		os.RemoveAll(lm.target)
-		lm.target = ""
-	}
-
-	if lm.release != nil {
-		return lm.release()
-	}
-
-	return nil
+	return fmt.Errorf("not implemented")
 }

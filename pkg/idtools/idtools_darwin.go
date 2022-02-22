@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/docker/docker/pkg/system"
+	"github.com/opencontainers/runc/libcontainer/user"
 )
 
 // This is currently a wrapper around MkdirAll, however, since currently
@@ -22,4 +23,15 @@ func mkdirAs(path string, mode os.FileMode, owner Identity, mkAll, chownExisting
 // Windows does not require/support this function, so always return true
 func CanAccess(path string, identity Identity) bool {
 	return true
+}
+
+// LookupGroup uses traditional local system files lookup (from libcontainer/user) on a group name,
+// followed by a call to `getent` for supporting host configured non-files passwd and group dbs
+func LookupGroup(name string) (user.Group, error) {
+	// first try a local system files lookup using existing capabilities
+	group, err := user.LookupGroup(name)
+	if err != nil {
+		return user.Group{}, err
+	}
+	return group, nil
 }
